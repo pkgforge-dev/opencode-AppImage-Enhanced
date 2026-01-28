@@ -32,5 +32,10 @@ cp -f "\$APPDIR"/shared/lib/ld-linux*.so* /tmp/"$kek"
 EOF
 chmod +x ./AppDir/bin/*.hook
 
+# for weird reasons opencode now attempts to execute $(basename $APPIMAGE)/opencode-cli
+# this makes absolutely no sense wtf, so we have to set the APPIMAGE var to the
+# opencode binary inside the AppDir so that it resolves correctly
+echo 'APPIMAGE=${SHARUN_DIR}/bin/opencode' >> ./AppDir/.env
+
 # Turn AppDir into AppImage
 quick-sharun --make-appimage
