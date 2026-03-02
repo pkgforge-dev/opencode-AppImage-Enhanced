@@ -11,20 +11,22 @@ export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}
 export ICON=/usr/share/icons/hicolor/128x128/apps/OpenCode.png
 export DESKTOP=/usr/share/applications/OpenCode.desktop
 export DEPLOY_OPENGL=1
-export DEPLOY_P11KIT=1
 
 # Deploy dependencies
-quick-sharun \
-	/usr/bin/OpenCode \
-	/usr/bin/opencode-cli
+quick-sharun /usr/bin/opencode*
 
 # bun makes binaries that self extract and read /proc/self/exe
 # they are also very delicate and get broken by strip
 kek=.$(tr -dc 'A-Za-z0-9_=-' < /dev/urandom | head -c 10)
-rm -f ./AppDir/bin/opencode-cli         ./AppDir/shared/bin/opencode-cli
-cp -v /usr/bin/opencode-cli             ./AppDir/bin/opencode-cli
-patchelf --set-interpreter /tmp/"$kek"  ./AppDir/bin/opencode-cli
-patchelf --set-rpath '$ORIGIN/../lib'   ./AppDir/bin/opencode-cli
+rm -f \
+	./AppDir/bin/opencode        \
+	./AppDir/bin/opencode-cli    \
+	./AppDir/shared/bin/opencode \
+	./AppDir/shared/bin/opencode-cli
+cp -v /usr/bin/opencode ./AppDir/bin/opencode
+ln -s opencode          ./AppDir/bin/opencode-cli
+patchelf --set-interpreter /tmp/"$kek"  ./AppDir/bin/opencode
+patchelf --set-rpath '$ORIGIN/../lib'   ./AppDir/bin/opencode
 
 cat <<EOF > ./AppDir/bin/random-linker.src.hook
 #!/bin/sh
