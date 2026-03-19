@@ -27,16 +27,18 @@ rm -f \
 	./AppDir/bin/opencode-cli    \
 	./AppDir/shared/bin/opencode \
 	./AppDir/shared/bin/opencode-cli
-cp -v /usr/bin/opencode ./AppDir/bin/opencode
-ln -s opencode          ./AppDir/bin/opencode-cli
-patchelf --set-interpreter /tmp/"$kek"  ./AppDir/bin/opencode
-patchelf --set-rpath '$ORIGIN/../lib'   ./AppDir/bin/opencode
 
-cat <<EOF > ./AppDir/bin/random-linker.src.hook
+cat <<EOF > ./AppDir/bin/opencode-cli
 #!/bin/sh
 cp -f "\$APPDIR"/shared/lib/ld-linux*.so* /tmp/"$kek"
+export LD_LIBRARY_PATH="\$APPDIR"/shared/lib
+exec "\$APPDIR"/bin/opencode.wrapped
 EOF
 chmod +x ./AppDir/bin/*.hook
+
+cp -v /usr/bin/opencode ./AppDir/bin/opencode.wrapped
+ln -s opencode-cli      ./AppDir/bin/opencode
+patchelf --set-interpreter /tmp/"$kek"  ./AppDir/bin/opencode.wrapped
 
 # for weird reasons opencode now attempts to execute $(basename $APPIMAGE)/opencode-cli
 # this makes absolutely no sense wtf, so we have to set the APPIMAGE var to the
