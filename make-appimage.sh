@@ -30,11 +30,11 @@ rm -f \
 cp -v /usr/bin/opencode ./AppDir/bin/opencode
 ln -s opencode          ./AppDir/bin/opencode-cli
 patchelf --set-interpreter /tmp/"$kek"  ./AppDir/bin/opencode
-patchelf --set-rpath '$ORIGIN/../lib'   ./AppDir/bin/opencode
 
 cat <<EOF > ./AppDir/bin/random-linker.src.hook
 #!/bin/sh
 cp -f "\$APPDIR"/shared/lib/ld-linux*.so* /tmp/"$kek"
+export LD_LIBRARY_PATH="\$APPDIR/shared/lib:\$LD_LIBRARY_PATH"
 EOF
 chmod +x ./AppDir/bin/*.hook
 
