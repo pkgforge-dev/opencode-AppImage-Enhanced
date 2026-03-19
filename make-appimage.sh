@@ -34,7 +34,7 @@ cp -f "\$APPDIR"/shared/lib/ld-linux*.so* /tmp/"$kek"
 export LD_LIBRARY_PATH="\$APPDIR"/shared/lib
 exec "\$APPDIR"/bin/opencode.wrapped
 EOF
-chmod +x ./AppDir/bin/*.hook
+chmod +x ./AppDir/bin/opencode-cli
 
 cp -v /usr/bin/opencode ./AppDir/bin/opencode.wrapped
 ln -s opencode-cli      ./AppDir/bin/opencode
