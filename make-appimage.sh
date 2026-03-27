@@ -8,8 +8,6 @@ export ARCH VERSION
 export OUTPATH=./dist
 export ADD_HOOKS="self-updater.bg.hook"
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
-export ICON=/usr/share/icons/hicolor/128x128/apps/OpenCode.png
-export DESKTOP=/usr/share/applications/OpenCode.desktop
 export DEPLOY_OPENGL=1
 
 # save the bun binary for later
@@ -30,7 +28,7 @@ kek=.$(tr -dc 'A-Za-z0-9_=-' < /dev/urandom | head -c 10)
 cp -v ./opencode-cli "$f"
 patchelf --set-interpreter /tmp/"$kek" "$f"
 patchelf --set-rpath '$ORIGIN/../lib' "$f"
-ln -s ../opencode-cli  ./AppDir/bin/resources/opencode-cli        
+ln -s ../opencode-cli  ./AppDir/bin/resources/opencode-cli
 
 cat <<EOF > ./AppDir/bin/random-linker.src.hook
 #!/bin/false
