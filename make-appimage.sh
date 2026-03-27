@@ -22,8 +22,8 @@ quick-sharun \
 
 # bun makes binaries that self extract and read /proc/self/exe
 # they are also very delicate and get broken by strip
-f=./AppDir/bin/resources/opencode-cli
-rm -f ./AppDir/shared/bin/opencode-cli "$f"
+f=./AppDir/bin/opencode-cli
+rm -f "$f" ./AppDir/bin/resources/opencode-cli
 kek=.$(tr -dc 'A-Za-z0-9_=-' < /dev/urandom | head -c 10)
 cp -v ./opencode-cli "$f"
 patchelf --set-interpreter /tmp/"$kek" "$f"
