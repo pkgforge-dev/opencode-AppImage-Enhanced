@@ -12,36 +12,30 @@ export ICON=/usr/share/icons/hicolor/128x128/apps/OpenCode.png
 export DESKTOP=/usr/share/applications/OpenCode.desktop
 export DEPLOY_OPENGL=1
 
+# save the bun binary for later
+cp -v ./AppDir/bin/resources/opencode-cli ./
+
 # Deploy dependencies
 quick-sharun \
-	/usr/bin/opencode*      \
+	./AppDir/bin/*          \
 	/usr/lib/libnss_nis.so* \
 	/usr/lib/libnsl.so*     \
 	/usr/lib/libnss_mdns*_minimal.so*
 
 # bun makes binaries that self extract and read /proc/self/exe
 # they are also very delicate and get broken by strip
+f=./AppDir/bin/resources/opencode-cli
+rm -f ./AppDir/shared/bin/opencode-cli "$f"
 kek=.$(tr -dc 'A-Za-z0-9_=-' < /dev/urandom | head -c 10)
-rm -f \
-	./AppDir/bin/opencode        \
-	./AppDir/bin/opencode-cli    \
-	./AppDir/shared/bin/opencode \
-	./AppDir/shared/bin/opencode-cli
-cp -v /usr/bin/opencode ./AppDir/bin/opencode
-ln -s opencode          ./AppDir/bin/opencode-cli
-patchelf --set-interpreter /tmp/"$kek"  ./AppDir/bin/opencode
-patchelf --set-rpath '$ORIGIN/../lib'   ./AppDir/bin/opencode
+cp -v ./opencode-cli "$f"
+patchelf --set-interpreter /tmp/"$kek" "$f"
+patchelf --set-rpath '$ORIGIN/../lib' "$f"
+ln -s ../opencode-cli  ./AppDir/bin/resources/opencode-cli        
 
 cat <<EOF > ./AppDir/bin/random-linker.src.hook
-#!/bin/sh
+#!/bin/false
 cp -f "\$APPDIR"/shared/lib/ld-linux*.so* /tmp/"$kek"
 EOF
-chmod +x ./AppDir/bin/*.hook
-
-# for weird reasons opencode now attempts to execute $(basename $APPIMAGE)/opencode-cli
-# this makes absolutely no sense wtf, so we have to set the APPIMAGE var to the
-# opencode binary inside the AppDir so that it resolves correctly
-echo 'APPIMAGE=${SHARUN_DIR}/bin/opencode' >> ./AppDir/.env
 
 # Turn AppDir into AppImage
 quick-sharun --make-appimage
