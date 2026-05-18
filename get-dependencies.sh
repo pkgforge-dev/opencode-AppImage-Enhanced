@@ -21,7 +21,7 @@ case "$ARCH" in
 	x86_64)  farch=amd64;;
 	aarch64) farch=arm64;;
 esac
-link=https://github.com/anomalyco/opencode/releases/latest/download/opencode-electron-linux-$farch.deb
+link=https://github.com/anomalyco/opencode/releases/latest/download/opencode-desktop-linux-$farch.deb
 if ! wget --retry-connrefused --tries=30 "$link" -O /tmp/temp.deb 2>/tmp/download.log; then
 	cat /tmp/download.log
 	exit 1
