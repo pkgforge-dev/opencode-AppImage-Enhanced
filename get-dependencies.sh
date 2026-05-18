@@ -33,6 +33,5 @@ rm -f ./*.xz /tmp/temp.deb
 mkdir -p ./AppDir/bin
 cp -rv ./opt/OpenCode/* ./AppDir/bin
 cp -v ./usr/share/applications/@*.desktop ./AppDir
-cp -v ./usr/share/icons/hicolor/284x284/apps/@*.png ./AppDir
 
 awk -F'/' '/Location:/{print $(NF-1); exit}' /tmp/download.log > ~/version

@@ -7,6 +7,7 @@ export ARCH
 export OUTPATH=./dist
 export ADD_HOOKS="self-updater.bg.hook"
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
+export ICON=https://raw.githubusercontent.com/anomalyco/opencode/refs/heads/dev/packages/desktop/icons/prod/128x128.png
 export DEPLOY_OPENGL=1
 
 # Deploy dependencies
