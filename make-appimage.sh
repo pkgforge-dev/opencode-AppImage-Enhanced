@@ -17,5 +17,11 @@ quick-sharun \
 	/usr/lib/libnsl.so*     \
 	/usr/lib/libnss_mdns*_minimal.so*
 
+pacman -S --noconfirm adwaita-fonts
+
+# Add AdwaitaSans font that OpenCode requests, as fallback can fail and show no text
+mkdir -p ./AppDir/share/fonts/Adwaita
+cp -v /usr/share/fonts/Adwaita/AdwaitaSans-Regular.ttf ./AppDir/share/fonts/Adwaita
+
 # Turn AppDir into AppImage
 quick-sharun --make-appimage
