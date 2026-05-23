@@ -17,5 +17,8 @@ quick-sharun \
 	/usr/lib/libnsl.so*     \
 	/usr/lib/libnss_mdns*_minimal.so*
 
+# Add AdwaitaSnas font that OpenCode requests, as fallback can fail and show no text
+wget --retry-connrefused --tries=30 https://gitlab.gnome.org/GNOME/adwaita-fonts/-/raw/main/sans/AdwaitaSans-Regular.ttf -O ./AppDir/share/fonts/AdwaitaSans-Regular.ttf
+
 # Turn AppDir into AppImage
 quick-sharun --make-appimage
