@@ -32,6 +32,6 @@ rm -f ./*.xz /tmp/temp.deb
 
 mkdir -p ./AppDir/bin
 cp -rv ./opt/OpenCode/* ./AppDir/bin
-cp -v ./usr/share/applications/@*.desktop ./AppDir
+cp -v ./usr/share/applications/ai.opencode.desktop.desktop ./AppDir
 
 awk -F'/' '/Location:/{print $(NF-1); exit}' /tmp/download.log > ~/version
